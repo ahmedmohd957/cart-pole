@@ -1,5 +1,6 @@
-# Hard code a simple strategy: 
-# if the pole is tilting to the left, then push the cart to the left, and vice versa.
+# Hard code a simple strategy that accelerates left when the pole is leaning 
+# toward the left and accelerates right when the pole is leaning toward the right. 
+# We will run this policy to see the average rewards it gets over 500 episodes:
 
 import gymnasium as gym
 import numpy as np

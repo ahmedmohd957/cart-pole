@@ -29,6 +29,16 @@ class Q_Learning:
             return np.random.choice(self.actionNumber)            
         else:
             return np.random.choice(np.where(self.q_table[self.discretizer.discretize(state)]==np.max(self.q_table[self.discretizer.discretize(state)]))[0])
+    
+    def update_q_table(self, state, action, reward, next_state, done):
+        q_max_next = np.max(self.q_table[next_state])
+
+        if not done:
+            error = reward + self.gamma * q_max_next - self.q_table[state + (action,)]
+            self.q_table[state + (action,)] = self.q_table[state + (action,)] + self.alpha * error
+        else:
+            error = reward - self.q_table[state + (action,)]
+            self.q_table[state + (action,)] = self.q_table[state + (action,)] + self.alpha * error
 
     def train(self, episodes):
         import numpy as np
@@ -50,15 +60,8 @@ class Q_Learning:
                 next_state = list(next_state)
                 discrete_next_state = self.discretizer.discretize(next_state)
 
-                q_max_next = np.max(self.q_table[discrete_next_state])     
+                self.update_q_table(discrete_state, action, reward, discrete_next_state, done)
                 
-                if not done:
-                    error = reward+self.gamma*q_max_next-self.q_table[discrete_state+(action,)]
-                    self.q_table[discrete_state+(action,)]=self.q_table[discrete_state+(action,)]+self.alpha*error
-                else:
-                    error = reward-self.q_table[discrete_state+(action,)]
-                    self.q_table[discrete_state+(action,)]=self.q_table[discrete_state+(action,)]+self.alpha*error
-                 
                 state = next_state
             
             np.save('trained_q_table.npy', self.q_table)

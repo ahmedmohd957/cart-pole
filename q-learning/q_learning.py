@@ -3,46 +3,50 @@ from discretize_state import StateDiscretizer
 
 class Q_Learning:
     def __init__(self, config):
-        import numpy as np
-        
         self.env = config["env"]
-        self.alpha = config["alpha"]
-        self.gamma = config["gamma"] 
+        self.learning_rate = config["learning_rate"]
+        self.discount_factor = config["discount_factor"] 
         self.epsilon = config['epsilon']
-        self.actionNumber = config['num_action_space']
+        self.epsilon_decay = config["epsilon_decay"]
+        self.num_action_space = config['num_action_space']
         self.bins = config["bins"]
         
         self.total_rewards = []
-        self.q_table = np.random.uniform(low=0, high=1, size=(self.bins[0], self.bins[1], self.bins[2], self.bins[3], self.actionNumber))
+        self.q_table = np.random.uniform(low=0, high=1, size=(self.bins[0], self.bins[1], self.bins[2], self.bins[3], self.num_action_space))
         self.discretizer = StateDiscretizer(self.env)
 
-    def choose_action(self,state,index):
-        if index < 500:
-            return np.random.choice(self.actionNumber)   
-             
-        random_number = np.random.random()
-         
-        if index > 7000:
-            self.epsilon = 0.999*self.epsilon
-         
-        if random_number < self.epsilon:
-            return np.random.choice(self.actionNumber)            
+    def random_action(self):
+        return np.random.choice(self.num_action_space)
+    
+    def decay_epsilon(self):
+        self.epsilon *= self.epsilon_decay
+
+    def epsilon_greedy_policy(self, state):
+        if np.random.random() < self.epsilon:
+            return self.random_action()        
         else:
             return np.random.choice(np.where(self.q_table[self.discretizer.discretize(state)]==np.max(self.q_table[self.discretizer.discretize(state)]))[0])
+
+    def choose_action(self, state, index):
+        if index < 500:
+            return self.random_action()
+        
+        if index > 2500:
+            self.decay_epsilon()
+        
+        return self.epsilon_greedy_policy(state)
     
     def update_q_table(self, state, action, reward, next_state, done):
         q_max_next = np.max(self.q_table[next_state])
 
         if not done:
-            error = reward + self.gamma * q_max_next - self.q_table[state + (action,)]
-            self.q_table[state + (action,)] = self.q_table[state + (action,)] + self.alpha * error
+            error = reward + self.discount_factor * q_max_next - self.q_table[state + (action,)]
+            self.q_table[state + (action,)] = self.q_table[state + (action,)] + self.learning_rate * error
         else:
             error = reward - self.q_table[state + (action,)]
-            self.q_table[state + (action,)] = self.q_table[state + (action,)] + self.alpha * error
+            self.q_table[state + (action,)] = self.q_table[state + (action,)] + self.learning_rate * error
 
     def train(self, episodes):
-        import numpy as np
-        
         for indexEpisode in range(episodes):
             episode_rewards = []
             

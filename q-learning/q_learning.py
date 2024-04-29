@@ -31,7 +31,7 @@ class Q_Learning:
         if index < 500:
             return self.random_action()
         
-        if index > 2500:
+        if index > 7000:
             self.decay_epsilon()
         
         return self.epsilon_greedy_policy(state)

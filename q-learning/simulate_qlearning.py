@@ -1,6 +1,5 @@
 import gymnasium as gym
 import numpy as np
-import time
 from discretize_state import StateDiscretizer
 
 class QLearningSimulator:
@@ -25,11 +24,10 @@ class QLearningSimulator:
             print(episode)
             action = self.choose_action(state)
             state, reward, done, _, _ = self.env.step(action)
-            rewards.append(reward)   
-            time.sleep(0.05)
+            rewards.append(reward)
             if (done):
-                time.sleep(1)
                 break
+            
         return rewards, self.env
 
 if __name__ == "__main__":

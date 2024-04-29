@@ -18,7 +18,7 @@ config = {
 }
 
 Q1 = Q_Learning(config)
-episodes = 100
+episodes = 15000
 Q1.train(episodes)
 
 # Calculate the mean total reward after each episode

@@ -31,3 +31,15 @@ def plot_graph_3(title, xlabel, ylabel, rewards, file_name):
     plt.grid(True)
     plt.savefig(f'{file_name}.png')
     plt.show()
+
+def plot_test_rewards_with_average(title, xlabel, ylabel, rewards, average_reward, file_name):
+    plt.figure(figsize=(10, 6))
+    plt.plot(rewards, label='Reward per Episode')
+    plt.axhline(y=average_reward, color='r', linestyle='--', label=f'Average Reward: {average_reward:.2f}')
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.legend(loc='upper right')
+    plt.savefig(f'{file_name}.png')
+    plt.show()
+    

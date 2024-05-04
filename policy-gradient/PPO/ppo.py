@@ -83,7 +83,7 @@ def train_value_function(observation_buffer, return_buffer):
 
 # Hyperparameters of the PPO algorithm
 steps_per_epoch = 500
-epochs = 1000
+epochs = 50
 gamma = 0.99
 clip_ratio = 0.2
 policy_learning_rate = 3e-4

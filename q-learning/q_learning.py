@@ -29,7 +29,7 @@ class Q_Learning:
 
     def choose_action(self, state, index):
         if index < 500:
-            return self.random_action()
+            return self.random_action() 
         
         if index > 7000:
             self.decay_epsilon()
@@ -56,7 +56,7 @@ class Q_Learning:
             print("Simulating episode {}".format(indexEpisode))
             
             done = False
-            while not done:
+            for _ in range(500):
                 discrete_state = self.discretizer.discretize(state)
                 action = self.choose_action(state, indexEpisode)
                 (next_state, reward, done, _, _) = self.env.step(action)          

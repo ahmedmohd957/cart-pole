@@ -5,7 +5,7 @@ from discretize_state import StateDiscretizer
 class QLearningSimulator:
     def __init__(self):
         self.env = gym.make('CartPole-v1', render_mode="human")
-        self.q_table = self.load_q_table('q_table.npy')
+        self.q_table = self.load_q_table('trained_q_table.npy')
         self.discretizer = StateDiscretizer(self.env)
 
     def load_q_table(self, file_name):
@@ -31,6 +31,6 @@ class QLearningSimulator:
         return rewards, self.env
 
 if __name__ == "__main__":
-    for i in range(5):
-        simulator = QLearningSimulator()
-        simulator.simulate(1000)
+    simulator = QLearningSimulator()
+    simulator.simulate(1000)
+        

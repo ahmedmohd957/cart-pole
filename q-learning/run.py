@@ -9,16 +9,16 @@ env = gym.make('CartPole-v1')
 
 config = {
     'env': env,
-    'learning_rate': 0.1,
-    'discount_factor': 1,
-    'epsilon': 0.2,
-    "epsilon_decay": 0.999,
+    'learning_rate': 0.5, # 0.5 best that the grid search showed
+    'discount_factor': 1, # 1 best that the grid search showed
+    'epsilon': 0.2, # 0.2 best that the grid search showed
+    "epsilon_decay": 0.999, #best that the grid search showed
     'bins': [30, 30, 30, 30],  # position, velocity, angle, angle velocity
     'num_action_space': env.action_space.n
 }
 
 Q1 = Q_Learning(config)
-episodes = 15000
+episodes = 10000
 Q1.train(episodes)
 
 # Calculate the mean total reward after each episode

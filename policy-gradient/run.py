@@ -4,10 +4,10 @@ from plotter import plot_graph_1, plot_graph_2, plot_graph_3
 import matplotlib.pyplot as plt
 
 config = {
-    'learning_rate': 0.01,
-    'discount_factor': 0.99,
+    'learning_rate': 0.005, #'learning_rate': 0.005 best that the grid search showed
+    'discount_factor': 0.95, #'discount_factor': 0.95 best that the grid search showed
     'seed': 543,
-    'n_episodes': 1000,
+    'n_episodes': 5000,
     'n_max_steps': 500,
     'log_interval': 10,
 }
@@ -28,6 +28,13 @@ plot_graph_1(
     file_name="test_1"
 )
 
+plot_graph_2(
+    title='Policy Loss', 
+    xlabel='Episode', 
+    ylabel='Policy Loss', 
+    rewards=reinforce.policy_losses, 
+    file_name='policy_loss'
+)
 # plt.figure(figsize=(10, 6))
 # plt.plot(reinforce.running_rewards)
 # plt.title('Running Average of Rewards')

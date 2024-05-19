@@ -4,6 +4,7 @@ import gymnasium as gym
 import matplotlib.pyplot as plt
 from reinforce import REINFORCE
 
+# Set up environment and configuration
 env = gym.make('CartPole-v1')
 
 config = {
@@ -14,6 +15,7 @@ config = {
     'seed': 1,
 }
 
+# Train REINFORCE agent
 reinforce = REINFORCE(config)
 episode_rewards, average_reward, convergence_episode, training_time = reinforce.train()
 

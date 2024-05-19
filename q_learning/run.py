@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from q_learning import Q_Learning
 
+# Set up environment and configuration
 env = gym.make('CartPole-v1')
 
 config = {
@@ -17,15 +18,16 @@ config = {
     'bins': (1, 1, 6, 3),
 }
 
+# Train Q-Learning agent
 q = Q_Learning(config)
 episode_rewards, average_reward, convergence_episode, training_time = q.train()
 
 # Print metrics
-print(
-    f"Average Cumulative Reward (last 100): {np.mean(episode_rewards[-100:])}")
+print(f"Average Cumulative Reward (last 100): {np.mean(episode_rewards[-100:])}")
 print(f"Convergence Episode: {convergence_episode}")
 print(f"Training Time (seconds): {training_time}")
 
+# Plotting the original reward and average reward
 plt.figure().set_figwidth(15)
 plt.plot(range(config['episodes']), episode_rewards, label="Reward")
 plt.plot(range(config['episodes']), average_reward, label="Average Reward")

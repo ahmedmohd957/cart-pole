@@ -3,7 +3,7 @@ import random
 import time
 import numpy as np
 from collections import defaultdict
-
+import csv
 
 class Q_Learning:
     def __init__(self, config):
@@ -46,9 +46,9 @@ class Q_Learning:
     # SELECT ACTION
     def select_action(self, state):
         if np.random.random() > self.epsilon:
-            return int(np.argmax(self.q_table[state]))
+            return int(np.argmax(self.q_table[state])), "Exploit"
         else:
-            return random.randint(0, self.n_actions - 1)
+            return random.randint(0, self.n_actions - 1), "Explore"
 
     # UPDATE THE Q-TABLE
     def update_q_table(self, state, action, reward, next_state, terminated):
@@ -76,6 +76,7 @@ class Q_Learning:
 
         episode_rewards = np.zeros(self.episodes)
         average_reward = []
+        training_log = []
         convergence_episode = None
 
         start = time.time()
@@ -89,7 +90,7 @@ class Q_Learning:
             cumulative_reward = 0.0
             done = False
             while not done:
-                action = self.select_action(state)
+                action, action_type = self.select_action(state)
                 next_obs, reward, terminated, truncated, _ = self.env.step(action)
                 next_state = self.discretize_state(next_obs, obs_bounds)
                 self.update_q_table(state, action, reward, next_state, terminated)
@@ -109,8 +110,17 @@ class Q_Learning:
             else:
                 average_reward.append(sum(episode_rewards[:episode]) / 100)
 
+            # Log training data
+            training_log.append([episode, cumulative_reward, action_type])
+
             if ((episode % 10) == 0):
                 print(episode, cumulative_reward, sep=',')
+
+        # Save training log to CSV
+        with open('q_training_log.csv', mode='w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(['Episode', 'Episode Reward', 'Action Type'])
+            writer.writerows(training_log)
 
         end = time.time()
         training_time = end - start

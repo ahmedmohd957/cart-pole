@@ -26,7 +26,7 @@ print(
 print(f"Convergence Episode: {convergence_episode}")
 print(f"Training Time (seconds): {training_time}")
 
-plt.figure()
+plt.figure().set_figwidth(15)
 plt.plot(range(config['episodes']), episode_rewards, label="Reward")
 plt.plot(range(config['episodes']), average_reward, label="Average Reward")
 plt.axhline(y=475, color='r', linestyle='--', label='475 Steps')

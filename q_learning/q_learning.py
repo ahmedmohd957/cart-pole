@@ -4,6 +4,7 @@ import time
 import numpy as np
 from collections import defaultdict
 
+
 class Q_Learning:
     def __init__(self, config):
         self.env = config["env"]
@@ -14,15 +15,15 @@ class Q_Learning:
         self.learning_rate = config["learning_rate"]
         self.min_learning_rate = config["min_learning_rate"]
         self.seed = config["seed"]
-        self.num_action_space = config['num_action_space']
         self.bins = config["bins"]
+        self.n_actions = self.env.action_space.n
 
         # Set the seed
         random.seed(self.seed)
         np.random.seed(self.seed)
 
         # Initialize q_table
-        self.q_table = defaultdict(lambda: np.zeros(self.num_action_space))
+        self.q_table = defaultdict(lambda: np.zeros(self.n_actions))
 
     # Discretize state
     def discretize_state(self, state, bounds):
@@ -41,14 +42,14 @@ class Q_Learning:
                 bin_index = int(round(scale_factor * state[i] - offset))
             bin_indices.append(bin_index)
         return tuple(bin_indices)
-    
+
     # SELECT ACTION
     def select_action(self, state):
         if np.random.random() > self.epsilon:
             return int(np.argmax(self.q_table[state]))
         else:
-            return random.randint(0, self.num_action_space - 1)
-        
+            return random.randint(0, self.n_actions - 1)
+
     # UPDATE THE Q-TABLE
     def update_q_table(self, state, action, reward, next_state, terminated):
         q_max_next = np.max(self.q_table[next_state])
@@ -62,11 +63,11 @@ class Q_Learning:
     # DECAY EPSILON
     def decay_epsilon(self, step):
         self.epsilon = max(self.min_epsilon, min(1.0, 1.0 - math.log10((step + 1) / 25)))
-    
+
     # DECAY LEARNING RATE
     def decay_learning_rate(self, step):
-        self.learning_rate =  max(self.min_learning_rate, min(1.0, 1.0 - math.log10((step + 1) / 25)))
-    
+        self.learning_rate = max(self.min_learning_rate, min(1.0, 1.0 - math.log10((step + 1) / 25)))
+
     # Train
     def train(self):
         obs_bounds = list(zip(self.env.observation_space.low, self.env.observation_space.high))
@@ -108,7 +109,7 @@ class Q_Learning:
             else:
                 average_reward.append(sum(episode_rewards[:episode]) / 100)
 
-            if ((episode % 10)==0):
+            if ((episode % 10) == 0):
                 print(episode, cumulative_reward, sep=',')
 
         end = time.time()

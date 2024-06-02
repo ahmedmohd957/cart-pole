@@ -27,7 +27,7 @@ episode_rewards, average_reward, solved_episode, training_time = agent.train()
 
 # Print metrics
 print(f"Average Reward (last 100): {np.mean(episode_rewards[-100:])}")
-print(f"Convergence Episode: {solved_episode}")
+print(f"Solved at episode: {solved_episode}")
 print(f"Training Time (seconds): {training_time}")
 
 # Plotting the original reward and average reward

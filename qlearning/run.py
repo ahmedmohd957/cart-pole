@@ -7,6 +7,7 @@ from QLearningAgent import QLearningAgent
 
 # Set up environment and configuration
 env = gym.make('CartPole-v1')
+observation = env.reset(seed=74)
 
 config = {
     'env': env,
@@ -22,11 +23,11 @@ config = {
 
 # Train Q-Learning agent
 agent = QLearningAgent(config)
-episode_rewards, average_reward, convergence_episode, training_time = agent.train()
+episode_rewards, average_reward, solved_episode, training_time = agent.train()
 
 # Print metrics
-print(f"Average Cumulative Reward (last 100): {np.mean(episode_rewards[-100:])}")
-print(f"Convergence Episode: {convergence_episode}")
+print(f"Average Reward (last 100): {np.mean(episode_rewards[-100:])}")
+print(f"Convergence Episode: {solved_episode}")
 print(f"Training Time (seconds): {training_time}")
 
 # Plotting the original reward and average reward

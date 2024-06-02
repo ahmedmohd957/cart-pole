@@ -68,12 +68,11 @@ class QLearningAgent:
     def train(self):
         episode_rewards = np.zeros(self.episodes)
         average_reward = []
-        convergence_episode = None
+        solved_episode = None
 
         start = time.time()
         for episode in range(self.episodes):    
             state, _ = self.env.reset()
-
             cumulative_reward = 0.0
             for _ in range(self.max_steps):
                 discretized_state = self.discretize_state(state)
@@ -90,18 +89,17 @@ class QLearningAgent:
 
             if episode > 700:
                 self.decay_epsilon()
-
-            # Check for convergence
+            
             if episode >= 100:
                 avg_reward = sum(episode_rewards[episode-100:episode]) / 100
                 average_reward.append(avg_reward)
-                if avg_reward >= 475 and convergence_episode is None:
-                    convergence_episode = episode
+                if avg_reward >= 475 and solved_episode is None:
+                    solved_episode = episode
             else:
                 average_reward.append(sum(episode_rewards[:episode]) / 100)
 
-            print(f"Episode {episode}, rewards {cumulative_reward}")
+            print(f"Episode: {episode}, Rewards: {cumulative_reward}")
             
         end = time.time()
         training_time = end - start
-        return episode_rewards, average_reward, convergence_episode, training_time
+        return episode_rewards, average_reward, solved_episode, training_time

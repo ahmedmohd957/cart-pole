@@ -77,7 +77,7 @@ class QLearningAgent:
             for _ in range(self.max_steps):
                 discretized_state = self.discretize_state(state)
                 action = self.select_action(discretized_state, episode)
-                next_state, reward, terminated, truncated, _ = self.env.step(action)
+                next_state, reward, terminated, _, _ = self.env.step(action)
                 discretized_next_state = self.discretize_state(next_state)
                 self.update_q_table(discretized_state, action, reward, discretized_next_state, terminated)
                 cumulative_reward += reward

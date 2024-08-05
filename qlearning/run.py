@@ -7,17 +7,17 @@ from QLearningAgent import QLearningAgent
 
 # Set up environment and configuration
 env = gym.make('CartPole-v1')
-observation = env.reset(seed=74)
+observation = env.reset(seed=42)
 
 config = {
     'env': env,
-    'learning_rate': 0.2,
+    'learning_rate': 0.421798,
     'gamma': 1.0,
-    'epsilon': 0.2,
-    'epsilon_decay': 0.670,
+    'epsilon': 0.1,
+    'epsilon_decay': 0.4,
     'episodes': 2000,
     'max_steps': 1000,
-    'bins': (38, 38, 38, 38),
+    'bins': (40, 40, 40, 40),
     'seed': 1,
 }
 
@@ -26,6 +26,7 @@ agent = QLearningAgent(config)
 episode_rewards, average_reward, solved_episode, training_time = agent.train()
 
 # Print metrics
+print(f"Average Reward: {np.mean(episode_rewards)}")
 print(f"Average Reward (last 100): {np.mean(episode_rewards[-100:])}")
 print(f"Solved at episode: {solved_episode}")
 print(f"Training Time (seconds): {training_time}")

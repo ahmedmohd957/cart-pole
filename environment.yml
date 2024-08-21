@@ -1,0 +1,23 @@
+name: cartpole
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - matplotlib=3.8.4=py39h06a4308_0
+  - numpy=1.23.5=py39hf6e8229_1
+  - pandas=2.2.1=py39h6a678d5_0
+  - pip=24.0=py39h06a4308_0
+  - python=3.9.18=h7a1cb2a_0
+  - pytorch=2.2.0=cpu_py39hdc00b08_0
+  - scikit-learn=1.4.2=py39h1128e8f_1
+  - scipy=1.13.0=py39h5f9d8c6_0
+  - seaborn=0.12.2=py39h06a4308_0
+  - torchvision=0.15.2=cpu_py39h83e0c9b_0
+  - tqdm=4.66.2=py39h2f386ee_0
+  - pip:
+      - gymnasium==0.29.1
+      - keras==3.3.3
+      - pygame==2.1.0
+      - scikit-optimize==0.10.2
+      - tensorflow==2.16.1
+      - torch-summary==1.4.5
